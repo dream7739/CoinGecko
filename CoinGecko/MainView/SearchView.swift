@@ -35,7 +35,7 @@ struct SearchView: View {
     func verticalSearchView() -> some View {
         LazyVStack {
             ForEach(coinList, id: \.self) { item in
-                SearchRowView(coin: item)
+                SearchRowView(coin: item, searchText: searchText)
             }
         }
     }
@@ -43,10 +43,12 @@ struct SearchView: View {
 }
 
 struct SearchRowView: View {
+    let searchText: String
     let coin: Coin
     
-    init(coin: Coin) {
+    init(coin: Coin, searchText: String) {
         self.coin = coin
+        self.searchText = searchText
     }
     
     var body: some View {
@@ -65,8 +67,7 @@ struct SearchRowView: View {
                 .frame(width: 40, height: 40)
             
             VStack(alignment: .leading) {
-                Text(coin.name)
-                    .font(.callout.bold())
+                Text(coin.name.toAttributedString(searchText))
                 Text(coin.symbol)
                     .font(.caption.bold())
                     .foregroundStyle(.gray)
