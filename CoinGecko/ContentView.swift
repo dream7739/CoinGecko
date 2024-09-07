@@ -7,15 +7,29 @@
 
 import SwiftUI
 
+//SwiftUI TabBar가 아니라 TabView
+//tintColor -> tint
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            TrendingView()
+                .tabItem {
+                    Label("", systemImage: "chart.line.uptrend.xyaxis")
+                }
+            SearchView()
+                .tabItem {
+                    Label("", systemImage: "magnifyingglass")
+                }
+            FavoriteView()
+                .tabItem {
+                    Label("", systemImage: "heart")
+                }
+            ProfileView()
+                .tabItem {
+                    Label("", systemImage: "person")
+                }
         }
-        .padding()
+        .tint(.purple)
     }
 }
 
