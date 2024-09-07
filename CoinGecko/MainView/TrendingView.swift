@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrendingView: View {
+    
     private enum SectionTitle: String {
         case top15coin = "Top 15 Coin"
         case top7nft = "Top 7 NFT"
@@ -27,7 +28,7 @@ struct TrendingView: View {
             } trailing: {
                 ProfileImageView()
             }
-
+            
         }
     }
     
@@ -58,7 +59,20 @@ struct TrendingCardView: View {
                 .padding(.horizontal, 3)
             
             VStack(alignment: .leading) {
-                CoinBasicView()
+                HStack {
+                    Image(systemName: "heart")
+                        .frame(width: 40, height: 40)
+                        .background(.orange)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Bitcoin")
+                            .font(.callout.bold())
+                        Text("BTC")
+                            .font(.caption.bold())
+                            .foregroundStyle(.gray)
+                    }
+                    Spacer()
+                }
                 Spacer()
                 CoinPriceView()
             }
@@ -66,61 +80,73 @@ struct TrendingCardView: View {
         }
     }
 }
-
-
-
-struct TrendingRankView: View {
-    let title: String
-    let items = 1...15
     
-    init(_ title: String) {
-        self.title = title
-    }
     
-    let rows = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .font(.title2.bold())
-            ScrollView(.horizontal) {
-                horizontalGrid()
+    struct TrendingRankView: View {
+        let title: String
+        let items = 1...15
+        
+        init(_ title: String) {
+            self.title = title
+        }
+        
+        let rows = [
+            GridItem(.flexible()),
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.title2.bold())
+                ScrollView(.horizontal) {
+                    horizontalGrid()
+                }
+                .scrollIndicators(.hidden)
+                .scrollTargetBehavior(.viewAligned)
             }
-            .scrollIndicators(.hidden)
-            .scrollTargetBehavior(.viewAligned)
+            .padding()
         }
-        .padding()
+        
+        func horizontalGrid() -> some View {
+            LazyHGrid(rows: rows, alignment: .center) {
+                ForEach(items, id: \.self) { item in
+                    TrendingRowView()
+                        .padding(.horizontal, 3)
+                }
+            }
+            .frame(height: 150)
+            .scrollTargetLayout()
+        }
     }
     
-    func horizontalGrid() -> some View {
-        LazyHGrid(rows: rows, alignment: .center) {
-            ForEach(items, id: \.self) { item in
-                TrendingRowView()
-                    .padding(.horizontal, 3)
+    struct TrendingRowView: View {
+        var body: some View {
+            HStack {
+                Text("1")
+                    .font(.title2.bold())
+                HStack {
+                    Image(systemName: "heart")
+                        .frame(width: 40, height: 40)
+                        .background(.orange)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Bitcoin")
+                            .font(.callout.bold())
+                        Text("BTC")
+                            .font(.caption.bold())
+                            .foregroundStyle(.gray)
+                    }
+                    Spacer()
+                }
+                Spacer()
+                CoinPriceView()
             }
         }
-        .frame(height: 150)
-        .scrollTargetLayout()
     }
-}
-
-struct TrendingRowView: View {
-    var body: some View {
-        HStack {
-            Text("1")
-                .font(.title2.bold())
-            CoinBasicView()
-            Spacer()
-            CoinPriceView()
-        }
+    
+    
+    #Preview {
+        TrendingView()
     }
-}
-
-
-#Preview {
-    TrendingView()
-}
