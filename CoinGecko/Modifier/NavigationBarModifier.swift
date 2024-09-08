@@ -27,6 +27,7 @@ struct NavigationBarModifier<Leading: View, Trailing: View> : ViewModifier {
                         trailing
                     }
                 }
+                
         } else {
             content
                 .navigationBarItems(leading: leading, trailing: trailing)

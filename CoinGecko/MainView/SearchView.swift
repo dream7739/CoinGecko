@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State var coinList: [Coin] = []
+    @State var coinList: [CoinSearch] = []
     @State private var searchText: String = ""
     
     var body: some View {
@@ -24,10 +24,7 @@ struct SearchView: View {
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "코인 이름을 입력하세요")
             .onSubmit(of: .search){
-                CoingeckoService.callSearchRequest(query: searchText) { response in
-                    print(response)
-                    coinList = response.coins
-                }
+                callSearchRequest()
             }
         }
     }
@@ -35,36 +32,42 @@ struct SearchView: View {
     func verticalSearchView() -> some View {
         LazyVStack {
             ForEach(coinList, id: \.self) { item in
-                SearchRowView(coin: item, searchText: searchText)
+                NavigationLink {
+                    LazyNavigationView(ChartView())
+                } label: {
+                    SearchRowView(coin: item, searchText: searchText)
+                }
             }
         }
+    }
+    
+    func callSearchRequest() {
+        CoingeckoService.callRequest(endPoint: APIURL.search(query: searchText).endPoint,
+                                     response: CoinSearchResponse.self,
+                                     completion: { result in
+            switch result {
+            case .success(let value):
+                coinList = value.coins
+            case .failure(let error):
+                print(error)
+            }
+        })
     }
     
 }
 
 struct SearchRowView: View {
     let searchText: String
-    let coin: Coin
+    let coin: CoinSearch
     
-    init(coin: Coin, searchText: String) {
+    init(coin: CoinSearch, searchText: String) {
         self.coin = coin
         self.searchText = searchText
     }
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: coin.thumb)) { result in
-                switch result {
-                case .empty:
-                    ProgressView()
-                case .success(let image):
-                    image
-                case .failure:
-                    Image(systemName: "star")
-                @unknown default:
-                    Image(systemName: "star")
-                }}
-                .frame(width: 40, height: 40)
+            CoinIconView(urlString: coin.thumb)
             
             VStack(alignment: .leading) {
                 Text(coin.name.toAttributedString(searchText))

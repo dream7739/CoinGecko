@@ -11,7 +11,7 @@ struct ProfileImageView: View {
     var body: some View {
         Image(.bear)
             .resizable()
-            .frame(width: 44, height: 44)
+            .frame(width: 38, height: 38)
             .asRoundCornerBorder(color: .purple)
     }
 }

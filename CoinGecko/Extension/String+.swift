@@ -21,4 +21,10 @@ extension String {
         
         return attributedString
     }
+    
+    func dateFormatString() -> String {
+        let date = DateFormatManager.serverDateFormatter.date(from: self) ?? Date()
+        let dateString = DateFormatManager.basicDateFormatter.string(from: date)
+        return dateString
+    }
 }

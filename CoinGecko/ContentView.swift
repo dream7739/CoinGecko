@@ -24,7 +24,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("", systemImage: "heart")
                 }
-            ProfileView()
+            ChartView()
                 .tabItem {
                     Label("", systemImage: "person")
                 }

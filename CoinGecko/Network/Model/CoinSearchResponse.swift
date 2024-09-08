@@ -8,10 +8,10 @@
 import Foundation
 
 struct CoinSearchResponse: Decodable {
-    let coins: [Coin]
+    let coins: [CoinSearch]
 }
 
-struct Coin: Decodable, Hashable, Identifiable {
+struct CoinSearch: Decodable, Hashable, Identifiable {
     let id: String
     let name: String
     let apiSymbol: String
