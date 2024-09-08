@@ -17,6 +17,8 @@
 		8864BFE92C8D670D00FD3D04 /* CoinIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864BFE82C8D670D00FD3D04 /* CoinIconView.swift */; };
 		8864BFED2C8D6E2100FD3D04 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864BFEC2C8D6E2100FD3D04 /* Int+.swift */; };
 		8864BFF02C8DA6A200FD3D04 /* DateFormatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864BFEF2C8DA6A200FD3D04 /* DateFormatManager.swift */; };
+		8864BFF22C8DD3C800FD3D04 /* CoinInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864BFF12C8DD3C800FD3D04 /* CoinInfoView.swift */; };
+		8864BFF42C8DD7B900FD3D04 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864BFF32C8DD7B900FD3D04 /* CustomNavigationBar.swift */; };
 		888D80912C8BDFB600E78F49 /* CoinPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D80902C8BDFB600E78F49 /* CoinPriceView.swift */; };
 		888D80952C8C0C3700E78F49 /* NavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D80942C8C0C3700E78F49 /* NavigationBarModifier.swift */; };
 		888D80972C8C0E4200E78F49 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D80962C8C0E4200E78F49 /* ProfileImageView.swift */; };
@@ -45,6 +47,8 @@
 		8864BFE82C8D670D00FD3D04 /* CoinIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinIconView.swift; sourceTree = "<group>"; };
 		8864BFEC2C8D6E2100FD3D04 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		8864BFEF2C8DA6A200FD3D04 /* DateFormatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatManager.swift; sourceTree = "<group>"; };
+		8864BFF12C8DD3C800FD3D04 /* CoinInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinInfoView.swift; sourceTree = "<group>"; };
+		8864BFF32C8DD7B900FD3D04 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		888D80902C8BDFB600E78F49 /* CoinPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinPriceView.swift; sourceTree = "<group>"; };
 		888D80942C8C0C3700E78F49 /* NavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifier.swift; sourceTree = "<group>"; };
 		888D80962C8C0E4200E78F49 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				888D80902C8BDFB600E78F49 /* CoinPriceView.swift */,
 				888D80962C8C0E4200E78F49 /* ProfileImageView.swift */,
 				8864BFE82C8D670D00FD3D04 /* CoinIconView.swift */,
+				8864BFF12C8DD3C800FD3D04 /* CoinInfoView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			children = (
 				888D80982C8C162800E78F49 /* RoundCornerBorder.swift */,
 				888D80942C8C0C3700E78F49 /* NavigationBarModifier.swift */,
+				8864BFF32C8DD7B900FD3D04 /* CustomNavigationBar.swift */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -269,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8864BFF22C8DD3C800FD3D04 /* CoinInfoView.swift in Sources */,
 				888D80952C8C0C3700E78F49 /* NavigationBarModifier.swift in Sources */,
 				8864BFF02C8DA6A200FD3D04 /* DateFormatManager.swift in Sources */,
 				888D809E2C8C6AAB00E78F49 /* CoinSearchResponse.swift in Sources */,
@@ -280,6 +287,7 @@
 				888D80A52C8C8C5C00E78F49 /* ChartView.swift in Sources */,
 				888D80AB2C8C9B9F00E78F49 /* CoinMarketResponse.swift in Sources */,
 				888D80972C8C0E4200E78F49 /* ProfileImageView.swift in Sources */,
+				8864BFF42C8DD7B900FD3D04 /* CustomNavigationBar.swift in Sources */,
 				88324BA72C8B5FE300C41609 /* CoinGeckoApp.swift in Sources */,
 				888D80A92C8C902500E78F49 /* APIURL.swift in Sources */,
 				88B7EEB12C8B65300053345C /* FavoriteView.swift in Sources */,

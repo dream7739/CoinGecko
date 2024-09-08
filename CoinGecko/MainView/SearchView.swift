@@ -16,12 +16,7 @@ struct SearchView: View {
             ScrollView(.vertical) {
                 verticalSearchView()
             }
-            .navigationTitle("Search")
-            .asNavigationBarItem {
-                EmptyView()
-            } trailing: {
-                ProfileImageView()
-            }
+            .asCustomNavigationBar(title: "Search")
             .searchable(text: $searchText, placement: .navigationBarDrawer, prompt: "코인 이름을 입력하세요")
             .onSubmit(of: .search){
                 callSearchRequest()

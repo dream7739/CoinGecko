@@ -22,12 +22,7 @@ struct TrendingView: View {
                 TrendingRankView(SectionTitle.top7nft.rawValue)
             }
             .scrollIndicators(.hidden)
-            .navigationTitle("Crypto Coin")
-            .asNavigationBarItem {
-                EmptyView()
-            } trailing: {
-                ProfileImageView()
-            }
+            .asCustomNavigationBar(title: "Crypto Coin")
             
         }
     }
