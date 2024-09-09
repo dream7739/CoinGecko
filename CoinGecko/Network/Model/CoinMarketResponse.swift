@@ -48,7 +48,15 @@ struct CoinMarket: Decodable {
     }
     
     var percentDescription: String {
-        return String(format: "%.2f", priceChangePercentage24H) + "%"
+        let sign: String
+        
+        if priceChangePercentage24H > 0 {
+            sign = "+"
+        } else {
+            sign = "-"
+        }
+        
+        return sign + String(format: "%.2f", priceChangePercentage24H) + "%"
     }
     
     var updateDescription: String {

@@ -54,12 +54,20 @@ struct FavoriteItemView: View {
                 .frame(height: 160)
                 .shadow(radius: 1)
             VStack {
-                CoinInfoView()
+                CoinInfoView(
+                    urlString: "",
+                    coinName: "Bitcoin",
+                    symbol: "BTC"
+                )
                     .padding()
                 Spacer()
-                CoinPriceView()
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding()
+//                CoinPriceView(
+//                    price: "1234",
+//                    percent: "5678",
+//                    alignment: .leading
+//                )
+//                    .frame(maxWidth: .infinity, alignment: .trailing)
+//                    .padding()
             }
         }
         .padding(3)

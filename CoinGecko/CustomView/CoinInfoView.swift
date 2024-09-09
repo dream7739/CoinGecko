@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct CoinInfoView: View {
+    let urlString: String
+    let coinName: String
+    let symbol: String
+    
     var body: some View {
         HStack {
-            Image(systemName: "heart")
-                .frame(width: 40, height: 40)
-                .background(.orange)
+            CoinIconView(urlString: urlString)
             
             VStack(alignment: .leading) {
-                Text("Bitcoin")
+                Text(coinName)
                     .font(.callout.bold())
-                Text("BTC")
+                Text(symbol)
                     .font(.caption.bold())
                     .foregroundStyle(.gray)
             }
@@ -27,5 +29,9 @@ struct CoinInfoView: View {
 }
 
 #Preview {
-    CoinInfoView()
+    CoinInfoView(
+        urlString: "",
+        coinName: "BitCoin",
+        symbol: "BTC"
+    )
 }

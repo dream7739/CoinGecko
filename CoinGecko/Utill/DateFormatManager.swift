@@ -12,10 +12,7 @@ enum DateFormatManager {
         case mdhhmmss = "M/d hh:mm:ss"
     }
     
-    static let serverDateFormatter = {
-        let dateFormatter = ISO8601DateFormatter()
-        return dateFormatter
-    }()
+    static let serverDateFormatter = ISO8601DateFormatter()
     
     static let basicDateFormatter = {
         let dateFormatter = DateFormatter()
