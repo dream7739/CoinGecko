@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TrendingView: View {
     @State private var trendCoinList = CoinTrendResponse(coins: [], nfts: [])
+    @State private var favoriteCoinList: [CoinMarket] = []
     
     private enum SectionTitle: String {
         case favorite = "My Favorite"
@@ -19,7 +20,7 @@ struct TrendingView: View {
     var body: some View {
         NavigationWrapper {
             ScrollView(.vertical) {
-                FavoriteSectionView(SectionTitle.favorite.rawValue)
+                FavoriteSectionView(SectionTitle.favorite.rawValue, favoriteCoinList)
                 CoinSectionView(SectionTitle.top15coin.rawValue, trendCoinList.coins)
                 NFTSectionView(SectionTitle.top7nft.rawValue, trendCoinList.nfts)
             }
@@ -27,24 +28,44 @@ struct TrendingView: View {
             .asCustomNavigationBar(title: "Crypto Coin")
         }
         .task {
-            CoingeckoService.callRequest(endPoint: APIURL.trending.endPoint, response: CoinTrendResponse.self) { result in
+            callTrendingAPI()
+            callFavoriteMarketAPI()
+        }
+    }
+    
+    private func callTrendingAPI() {
+        CoingeckoService.callRequest(endPoint: APIURL.trending.endPoint, response: CoinTrendResponse.self) { result in
+            switch result {
+            case .success(let value):
+                trendCoinList = value
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func callFavoriteMarketAPI() {
+        let favoriteIds = UserDefaultsManager.favorite.map { $0.key }.joined(separator: ",")
+        CoingeckoService.callRequest(
+            endPoint: APIURL.market(ids: favoriteIds).endPoint,
+            response: [CoinMarket].self) { result in
                 switch result {
                 case .success(let value):
-                    print(value)
-                    trendCoinList = value
+                    favoriteCoinList = value
                 case .failure(let error):
                     print(error)
                 }
             }
-        }
     }
 }
 
 struct FavoriteSectionView: View {
     let title: String
+    let favoriteCoinList: [CoinMarket]
     
-    init(_ title: String) {
+    init(_ title: String, _ favoriteCoinList: [CoinMarket]) {
         self.title = title
+        self.favoriteCoinList = favoriteCoinList
     }
     
     var body: some View {
@@ -53,10 +74,9 @@ struct FavoriteSectionView: View {
                 .font(.title2.bold())
             ScrollView(.horizontal) {
                 LazyHStack() {
-                    FavoriteCardView()
-                    FavoriteCardView()
-                    FavoriteCardView()
-                    FavoriteCardView()
+                    ForEach(favoriteCoinList, id: \.self) { item in
+                        FavoriteCardView(coin: item)
+                    }
                 }
             }
         }
@@ -66,6 +86,7 @@ struct FavoriteSectionView: View {
 
 
 struct FavoriteCardView: View {
+    let coin: CoinMarket
     
     var body: some View {
         ZStack {
@@ -76,24 +97,19 @@ struct FavoriteCardView: View {
             
             VStack(alignment: .leading) {
                 CoinInfoView(
-                    urlString: "",
-                    coinName: "Bitcoin",
-                    symbol: "BTC"
+                    urlString: coin.image,
+                    coinName: coin.name,
+                    symbol: coin.symbol
                 )
                 Spacer()
-                CardPriceView(price: "₩12,345,678", percentage: "+0.64%")
-                
+                CardPriceView(
+                    viewType: .trend,
+                    price: coin.priceDescription,
+                    percentage: coin.percentDescription
+                )
             }
             .padding()
-        }
-    }
-    
-    func coinPriceView() -> some View {
-        VStack(alignment: .leading) {
-            Text("123456원")
-            Text("+0.64%")
-                .font(.caption.bold())
-                .asSignColorText("+")
+            .frame(maxWidth: 230)
         }
     }
 }

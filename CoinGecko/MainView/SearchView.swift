@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State var coinList: [CoinSearch] = []
+    @State private var coinList: [CoinSearch] = []
     @State private var searchText: String = ""
     
     var body: some View {
@@ -26,11 +26,11 @@ struct SearchView: View {
     
     func verticalSearchView() -> some View {
         LazyVStack {
-            ForEach(coinList, id: \.self) { item in
+            ForEach($coinList, id: \.self) { $item in
                 NavigationLink {
                     LazyNavigationView(ChartView(id: item.id))
                 } label: {
-                    SearchRowView(coin: item, searchText: searchText)
+                    SearchRowView(searchText: searchText, coin: $item)
                 }
             }
         }
@@ -53,12 +53,7 @@ struct SearchView: View {
 
 struct SearchRowView: View {
     let searchText: String
-    let coin: CoinSearch
-    
-    init(coin: CoinSearch, searchText: String) {
-        self.coin = coin
-        self.searchText = searchText
-    }
+    @Binding var coin: CoinSearch
     
     var body: some View {
         HStack {
@@ -73,9 +68,23 @@ struct SearchRowView: View {
             
             Spacer()
             
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                Image(systemName: "star")
-                    .foregroundStyle(.purple)
+            Button(action: {
+                coin.isLike.toggle()
+                
+                if coin.isLike && UserDefaultsManager.favorite.count < 10 {
+                    UserDefaultsManager.favorite[coin.id] = coin.id
+                } else {
+                    UserDefaultsManager.favorite[coin.id] = nil
+                }
+            }, label: {
+                if let _ = UserDefaultsManager.favorite[coin.id] {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(.purple)
+                } else {
+                    Image(systemName: "star")
+                        .foregroundStyle(.purple)
+                }
+            
             })
         }
         .frame(height: 50)

@@ -8,69 +8,88 @@
 import SwiftUI
 
 struct FavoriteView: View {
+    @State private var favoriteCoinList: [CoinMarket] = []
+    
     var body: some View {
         NavigationWrapper {
             verticalFavoriteGrid()
                 .asCustomNavigationBar(title: "Favorite Coin")
+        }.task {
+            callFetchMarketAPI()
         }
     }
     
-    func verticalFavoriteGrid() -> some View {
+    private func verticalFavoriteGrid() -> some View {
         ScrollView(.vertical) {
-            FavoriteGridView()
+            FavoriteGridView(favoriteCoinList: favoriteCoinList)
         }
+    }
+    
+    private func callFetchMarketAPI() {
+        let favoriteIds = UserDefaultsManager.favorite.map { $0.key }.joined(separator: ",")
+        CoingeckoService.callRequest(
+            endPoint: APIURL.market(ids: favoriteIds).endPoint,
+            response: [CoinMarket].self) { result in
+                switch result {
+                case .success(let value):
+                    favoriteCoinList = value
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
 }
 
 struct FavoriteGridView: View {
+    let favoriteCoinList: [CoinMarket]
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    
     var body: some View {
         LazyVGrid(columns: columns, content: {
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
-            FavoriteItemView()
+            ForEach(favoriteCoinList, id: \.self) { item in
+                FavoriteItemView(coin: item)
+            }
+          
         })
-        .padding()
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
     }
 }
 
 struct FavoriteItemView: View {
+    let coin: CoinMarket
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
                 .fill(.white)
-                .frame(height: 160)
-                .shadow(radius: 1)
+                .shadow(color: .gray.opacity(0.3), radius: 5)
             VStack {
                 CoinInfoView(
-                    urlString: "",
-                    coinName: "Bitcoin",
-                    symbol: "BTC"
+                    urlString: coin.image,
+                    coinName: coin.name,
+                    symbol: coin.symbol
                 )
-                    .padding()
+                
                 Spacer()
-//                CoinPriceView(
-//                    price: "1234",
-//                    percent: "5678",
-//                    alignment: .leading
-//                )
-//                    .frame(maxWidth: .infinity, alignment: .trailing)
-//                    .padding()
+                
+                HStack {
+                    Spacer()
+                    CardPriceView(
+                        viewType: .favorite,
+                        price: coin.priceDescription,
+                        percentage: coin.percentDescription
+                    )
+                }
             }
+            .padding()
         }
-        .padding(3)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 5)
     }
 }
 

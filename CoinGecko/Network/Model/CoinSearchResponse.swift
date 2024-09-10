@@ -19,6 +19,7 @@ struct CoinSearch: Decodable, Hashable, Identifiable {
     let marketCapRank: Int?
     let thumb: String
     let large: String
+    var isLike = false
     
     enum CodingKeys: String, CodingKey {
         case id

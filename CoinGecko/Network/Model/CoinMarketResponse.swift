@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct CoinMarket: Decodable {
+struct CoinMarket: Decodable, Hashable {
     let id: String
     let symbol: String
     let name: String
@@ -50,7 +50,7 @@ struct CoinMarket: Decodable {
         if priceChangePercentage24H > 0 {
             sign = "+"
         } else {
-            sign = "-"
+            sign = ""
         }
         
         return sign + String(format: "%.2f", priceChangePercentage24H) + "%"
@@ -76,7 +76,7 @@ struct CoinMarket: Decodable {
     
 }
 
-struct SparkLine: Decodable {
+struct SparkLine: Decodable, Hashable {
     let price: [Double]
 }
 

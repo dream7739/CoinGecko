@@ -22,8 +22,12 @@ struct SignColorBackgroudText: ViewModifier {
     func body(content: Content) -> some View {
         content
             .asSignColorText(sign)
-            .padding()
-            .background(sign == "+" ? .red : .blue).opacity(0.3)
+            .padding(4)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .fill( sign == "+" ? .red : .blue)
+                    .opacity(0.1)
+            )
     }
 }
 

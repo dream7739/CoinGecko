@@ -19,6 +19,7 @@ struct CoinInfoView: View {
             VStack(alignment: .leading) {
                 Text(coinName)
                     .font(.callout.bold())
+                    .lineLimit(2)
                 Text(symbol)
                     .font(.caption.bold())
                     .foregroundStyle(.gray)
