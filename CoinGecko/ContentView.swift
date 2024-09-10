@@ -24,10 +24,6 @@ struct ContentView: View {
                 .tabItem {
                     Label("", systemImage: "heart")
                 }
-            ChartView()
-                .tabItem {
-                    Label("", systemImage: "person")
-                }
         }
         .tint(.purple)
     }

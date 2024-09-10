@@ -9,13 +9,30 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-    @State var coinMarket = marketDummy
+    @State var coinMarket = CoinMarket(
+        id: "",
+        symbol: "",
+        name: "",
+        image: "",
+        currentPrice: 0,
+        high24H: 0,
+        low24H: 0,
+        priceChangePercentage24H: 0,
+        ath: 0,
+        athDate: "",
+        atl: 0,
+        atlDate: "",
+        lastUpdated: "",
+        sparkLine7d: SparkLine(price: [0])
+    )
+    
+    let id: String
     
     var body: some View {
         VStack(alignment: .leading) {
-            MarketHeaderView(coinMarket: coinMarket.first!)
-            MarketPriceGrid(coinMarket: coinMarket.first!)
-            GraphView(prices: coinMarket.first!.sparkLine7d.price)
+            MarketHeaderView(coinMarket: coinMarket)
+            MarketPriceGrid(coinMarket: coinMarket)
+            GraphView(prices: coinMarket.sparkLine7d.price)
             updateDateText()
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -25,11 +42,27 @@ struct ChartView: View {
             Image(systemName: "star")
                 .foregroundColor(.purple)
         }
+        .task {
+            CoingeckoService.callRequest(
+                endPoint: APIURL.market(ids: id).endPoint,
+                response: [CoinMarket].self) { result in
+                    switch result {
+                    case .success(let value):
+                        if let item = value.first {
+                            coinMarket = item
+                        }
+                        print(value)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+        }
     }
     
     func updateDateText() -> some View {
-        Text(coinMarket.first!.updateDescription)
+        Text(coinMarket.updateDescription)
             .foregroundStyle(.gray)
+            .font(.footnote)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.trailing, 4)
     }
@@ -46,7 +79,6 @@ struct MarketHeaderView: View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
-                    //                    Image(systemName: "star")
                     CoinIconView(urlString: coinMarket.image)
                     Text(coinMarket.name)
                         .font(.title.bold())
@@ -57,8 +89,9 @@ struct MarketHeaderView: View {
                     HStack {
                         Text(coinMarket.percentDescription)
                             .font(.callout)
-                            .foregroundStyle(.red)
+                            .asSignColorText(String(coinMarket.percentDescription.prefix(1)))
                         Text("Today")
+                            .font(.callout)
                             .foregroundStyle(.gray)
                     }
                 }
@@ -71,17 +104,32 @@ struct MarketHeaderView: View {
 }
 
 struct MarketPriceView: View {
-    let title: String
+    enum PriceType: String {
+        case high = "고가"
+        case highest = "신고점"
+        case low = "저가"
+        case lowest = "신저점"
+        
+        var color: Color {
+            switch self {
+            case .high, .highest:
+                    return .red
+            case .low, .lowest:
+                return .blue
+            }
+        }
+    }
+    
+    let type: PriceType
     let price: String
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
+            Text(type.rawValue)
                 .bold()
-                .foregroundStyle(.red).bold()
+                .foregroundStyle(type.color).bold()
             Text(price)
                 .font(.callout)
-                .foregroundStyle(.gray)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
@@ -99,10 +147,10 @@ struct MarketPriceGrid: View {
     
     var body: some View {
         LazyVGrid(columns: columns) {
-            MarketPriceView(title: "고가", price: coinMarket.highPriceDescription)
-            MarketPriceView(title: "신고점", price: coinMarket.athDescription)
-            MarketPriceView(title: "저가", price: coinMarket.lowPriceDescription)
-            MarketPriceView(title: "신저점", price: coinMarket.atlDescription)
+            MarketPriceView(type: .high, price: coinMarket.highPriceDescription)
+            MarketPriceView(type: .low, price: coinMarket.lowPriceDescription)
+            MarketPriceView(type: .highest, price: coinMarket.athDescription)
+            MarketPriceView(type: .lowest, price: coinMarket.atlDescription)
         }
     }
 }
@@ -115,9 +163,9 @@ struct GraphView: View {
         let curGradient = LinearGradient(
             gradient: Gradient (
                 colors: [
-                    curColor.opacity(0.7),
                     curColor.opacity(0.5),
-                    curColor.opacity(0.3)
+                    curColor.opacity(0.3),
+                    curColor.opacity(0.1)
                 ]
             ),
             startPoint: .top, endPoint: .bottom)
@@ -139,10 +187,10 @@ struct GraphView: View {
         }
         .chartXAxis(.hidden)
         .chartYAxis(.hidden)
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
     }
 }
 
 #Preview {
-    ChartView()
+    ChartView(id: "bitcoin")
 }

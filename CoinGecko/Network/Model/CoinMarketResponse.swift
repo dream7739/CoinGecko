@@ -7,22 +7,19 @@
 
 import Foundation
 
-struct CoinMarketResponse: Decodable {
-    let data: [CoinMarket]
-}
 
 struct CoinMarket: Decodable {
     let id: String
     let symbol: String
     let name: String
     let image: String
-    let currentPrice: Int //현재가(시가)
-    let high24H: Int //코인 고가
-    let low24H: Int //코인 저가
+    let currentPrice: Double //현재가(시가)
+    let high24H: Double //코인 고가
+    let low24H: Double //코인 저가
     let priceChangePercentage24H: Double //코인변동폭
-    let ath: Int //코인 사상 최고가(신고점, All Time High)
+    let ath: Double //코인 사상 최고가(신고점, All Time High)
     let athDate: String //신고점 일자
-    let atl: Int //코인 사상 최저가(신저점, All Time Low)
+    let atl: Double //코인 사상 최저가(신저점, All Time Low)
     let atlDate: String //신저점 일자
     let lastUpdated: String //코인 시장 데이터 업데이트 시각
     let sparkLine7d: SparkLine //일주일간 코인 시세 정보

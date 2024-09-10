@@ -44,6 +44,7 @@ struct CoingeckoService {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
                     completion(.success(decodedData))
                 } catch {
+                    print(error)
                     completion(.failure(.decoding))
                 }
                 

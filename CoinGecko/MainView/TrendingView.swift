@@ -135,7 +135,7 @@ struct CoinSectionView: View {
                 CoinRowView(rank: index + 1, trendCoin: items[index].item)
             }
         }
-        .frame(height: 150)
+        .frame(maxHeight: .infinity)
         .scrollTargetLayout()
     }
 }
@@ -149,23 +149,20 @@ struct CoinRowView: View {
         HStack {
             Text("\(rank)")
                 .font(.title2.bold())
-            HStack {
-                CoinIconView(urlString: trendCoin.small)
-                VStack(alignment: .leading) {
-                    Text(trendCoin.name)
-                        .font(.callout.bold())
-                    Text(trendCoin.symbol)
-                        .font(.caption.bold())
-                        .foregroundStyle(.gray)
-                }
-                Spacer()
-            }
+            CoinInfoView(
+                urlString: trendCoin.small,
+                coinName: trendCoin.name,
+                symbol: trendCoin.symbol
+            )
             Spacer()
             RowPriceView(
                 price: trendCoin.data.priceDescription,
                 percentage: trendCoin.data.priceChangePercentage.krwPercentDescription
             )
         }
+        .frame(width: UIScreen.main.bounds.width - 100)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 5)
     }
     
 }
@@ -207,7 +204,7 @@ struct NFTSectionView: View {
                     .padding(.horizontal, 3)
             }
         }
-        .frame(height: 150)
+        .frame(maxHeight: .infinity)
         .scrollTargetLayout()
     }
 }
@@ -220,24 +217,20 @@ struct NFTRowView: View {
         HStack {
             Text("\(rank)")
                 .font(.title2.bold())
-            HStack {
-                CoinIconView(urlString: trendNFT.thumb)
-                
-                VStack(alignment: .leading) {
-                    Text(trendNFT.name)
-                        .font(.callout.bold())
-                    Text(trendNFT.symbol)
-                        .font(.caption.bold())
-                        .foregroundStyle(.gray)
-                }
-                Spacer()
-            }
+            CoinInfoView(
+                urlString: trendNFT.thumb,
+                coinName: trendNFT.name,
+                symbol: trendNFT.symbol
+            )
             Spacer()
             RowPriceView(
                 price: trendNFT.data.floorPrice,
                 percentage: trendNFT.data.pricePercentDescription
             )
         }
+        .frame(width: UIScreen.main.bounds.width - 100)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 5)
     }
 }
 

@@ -28,7 +28,7 @@ struct SearchView: View {
         LazyVStack {
             ForEach(coinList, id: \.self) { item in
                 NavigationLink {
-                    LazyNavigationView(ChartView())
+                    LazyNavigationView(ChartView(id: item.id))
                 } label: {
                     SearchRowView(coin: item, searchText: searchText)
                 }

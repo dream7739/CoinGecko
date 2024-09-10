@@ -7,11 +7,15 @@
 
 import Foundation
 
+//https://api.coingecko.com/api/v3/coins/markets?vs_currency=krw&ids=bitcoin&sparkline=true
+
+
 enum APIURL {
     static let baseURL: String = "https://api.coingecko.com/api/v3/"
     
     case search(query: String)
     case trending
+    case market(ids: String)
     
     var endPoint: String {
         switch self {
@@ -19,6 +23,8 @@ enum APIURL {
             return APIURL.baseURL + "search?query=\(query)"
         case .trending:
             return APIURL.baseURL + "search/trending"
+        case .market(let ids):
+            return APIURL.baseURL + "coins/markets?vs_currency=krw&ids=\(ids)&sparkline=true"
         }
     }
 }
