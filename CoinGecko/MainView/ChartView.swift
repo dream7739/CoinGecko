@@ -26,7 +26,10 @@ struct ChartView: View {
         sparkLine7d: SparkLine(price: [0])
     )
     
-    let id: String
+    @State private var favoriteList = UserDefaultsManager.favorite
+    
+    var id: String
+
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,8 +42,24 @@ struct ChartView: View {
         .asNavigationBarItem {
             EmptyView()
         } trailing: {
-            Image(systemName: "star")
-                .foregroundColor(.purple)
+            Button(action: {
+                if let _ = favoriteList[id] {
+                    favoriteList[id] = nil
+                } else {
+                    if favoriteList.count < 10 {
+                        favoriteList[id] = id
+                    }
+                }
+            }, label: {
+                if let _ = favoriteList[id] {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(.purple)
+                } else {
+                    Image(systemName: "star")
+                        .foregroundStyle(.purple)
+                }
+            
+            })
         }
         .task {
             CoingeckoService.callRequest(
@@ -191,6 +210,3 @@ struct GraphView: View {
     }
 }
 
-#Preview {
-    ChartView(id: "bitcoin")
-}

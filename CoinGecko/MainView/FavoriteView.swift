@@ -51,7 +51,12 @@ struct FavoriteGridView: View {
     var body: some View {
         LazyVGrid(columns: columns, content: {
             ForEach(favoriteCoinList, id: \.self) { item in
-                FavoriteItemView(coin: item)
+                NavigationLink {
+                    LazyNavigationView(ChartView(id: item.id))
+                } label: {
+                    FavoriteItemView(coin: item)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
           
         })

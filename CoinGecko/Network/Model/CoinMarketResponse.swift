@@ -23,6 +23,7 @@ struct CoinMarket: Decodable, Hashable {
     let atlDate: String //신저점 일자
     let lastUpdated: String //코인 시장 데이터 업데이트 시각
     let sparkLine7d: SparkLine //일주일간 코인 시세 정보
+    var isLike = false
     
     var priceDescription: String {
         return currentPrice.toFormattedString

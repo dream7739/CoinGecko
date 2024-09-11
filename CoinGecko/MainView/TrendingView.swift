@@ -75,7 +75,13 @@ struct FavoriteSectionView: View {
             ScrollView(.horizontal) {
                 LazyHStack() {
                     ForEach(favoriteCoinList, id: \.self) { item in
-                        FavoriteCardView(coin: item)
+                        NavigationLink {
+                            LazyNavigationView(ChartView(id: item.id))
+                        }
+                        label: {
+                            FavoriteCardView(coin: item)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }
@@ -148,7 +154,13 @@ struct CoinSectionView: View {
     func horizontalGrid() -> some View {
         LazyHGrid(rows: rows, alignment: .center) {
             ForEach(0..<items.count, id: \.self) { index in
-                CoinRowView(rank: index + 1, trendCoin: items[index].item)
+                NavigationLink {
+                    LazyNavigationView(ChartView(id: items[index].item.id))
+                }
+                label: {
+                    CoinRowView(rank: index + 1, trendCoin: items[index].item)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .frame(maxHeight: .infinity)

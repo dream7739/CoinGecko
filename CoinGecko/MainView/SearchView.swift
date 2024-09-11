@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var coinList: [CoinSearch] = []
+    @State private var favoriteList = UserDefaultsManager.favorite
     @State private var searchText: String = ""
     
     var body: some View {
@@ -30,7 +31,11 @@ struct SearchView: View {
                 NavigationLink {
                     LazyNavigationView(ChartView(id: item.id))
                 } label: {
-                    SearchRowView(searchText: searchText, coin: $item)
+                    SearchRowView(
+                        searchText: searchText,
+                        coin: $item,
+                        favoriteList: $favoriteList
+                    )
                 }
             }
         }
@@ -54,6 +59,7 @@ struct SearchView: View {
 struct SearchRowView: View {
     let searchText: String
     @Binding var coin: CoinSearch
+    @Binding var favoriteList: [String: String]
     
     var body: some View {
         HStack {
@@ -69,15 +75,15 @@ struct SearchRowView: View {
             Spacer()
             
             Button(action: {
-                coin.isLike.toggle()
-                
-                if coin.isLike && UserDefaultsManager.favorite.count < 10 {
-                    UserDefaultsManager.favorite[coin.id] = coin.id
+                if let _ = favoriteList[coin.id] {
+                    favoriteList[coin.id] = nil
                 } else {
-                    UserDefaultsManager.favorite[coin.id] = nil
+                    if favoriteList.count < 10 {
+                        favoriteList[coin.id] = coin.id
+                    }
                 }
             }, label: {
-                if let _ = UserDefaultsManager.favorite[coin.id] {
+                if let _ = favoriteList[coin.id] {
                     Image(systemName: "star.fill")
                         .foregroundStyle(.purple)
                 } else {
